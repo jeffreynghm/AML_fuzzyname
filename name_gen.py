@@ -13,13 +13,23 @@ f_list = f.readlines()
 def edits1(word):
     "All edits that are one edit away from `word`."
     letters    = 'abcdefghijklmnopqrstuvwxyz'
+    des_set = ()
     splits     = [(word[:i], word[i:])    for i in range(len(word) + 1)]
     deletes    = [L + R[1:]               for L, R in splits if R]
     transposes = [L + R[1] + R[0] + R[2:] for L, R in splits if len(R)>1]
     replaces   = [L + c + R[1:]           for L, R in splits if R for c in letters]
     inserts    = [L + c + R               for L, R in splits for c in letters]
     unchanged = [word]
-    return set(deletes + transposes + replaces + inserts+ unchanged)
+    
+    des_set += ('unchanged',)
+    des_set += ('lev1_del',)*len(deletes)
+    des_set += ('lev1_trans',)*len(transposes)
+    des_set += ('lev1_replaces',)*len(replaces)
+    des_set += ('lev1_trans',)*len(transposes)
+    des_set += ('lev1_inserts',)*len(inserts)
+
+    
+    return set(unchanged+ deletes + transposes + replaces + inserts), des_set
 
 #replace the nth occurance of a string
 def nth_repl(s, sub, repl, nth):
@@ -36,17 +46,43 @@ def nth_repl(s, sub, repl, nth):
         return s[:find]+repl+s[find + len(sub):]
     return s
 
-
+lev1_des_set = ()
+symb_des_set =()
 for name_org in f_list:
     name_org = name_org.strip()
     print(name_org)
+    
+    #keep the original metaphone
+    metaphone_name_org = jf.metaphone(name_org)
+    metaphone_name_org_set = metaphone_name_org.split(' ')
 
     #generate list of dict
-    temp_words = edits1(name_org)
+    temp_words,lev1_des_set = edits1(name_org)
     
+    set_pos = 0
+    #keep the original keys
+    org_keys = []
+
+
+    #the original sequence
+    name_org_json = HumanName(name_org)
+    name_org_dict_org = name_org_json.as_dict()
+    keys_org = name_org_dict_org.keys()
+    name_org_dict={}
+    
+    #cleansed the dict
+    for key in keys_org:
+        if len(name_org_dict_org[key].strip()) > 0:
+            name_org_dict[key] = name_org_dict_org[key]
+    name_org_keys = list(name_org_dict.keys())
+
+        
     for name in temp_words:
         name_n_list = []
+        des_n_list = []        
+        
         name_n_list.append(name)
+        des_n_list.append(lev1_des_set[set_pos])
 
         #replace space by symbol
         symb_cnt = name.count(' ')+name.count('-')
@@ -55,22 +91,30 @@ for name_org in f_list:
             name_2 = nth_repl(name,' ','-',cnt)
             if name_2 not in name_n_list:
                 name_n_list.append(name_2)
+                des_n_list.append((lev1_des_set[set_pos],'symb_rep'))
             
             name_3 = nth_repl(name,' ','',cnt)
             if name_3 not in name_n_list:
                 name_n_list.append(name_3)
+                des_n_list.append((lev1_des_set[set_pos],'symb_rep'))
 
             name_4 = nth_repl(name,'-',' ',cnt)
             if name_4 not in name_n_list:
                 name_n_list.append(name_4)
+                des_n_list.append((lev1_des_set[set_pos],'symb_rep'))
             
             name_5 = nth_repl(name,'-','',cnt)
             if name_5 not in name_n_list:
                 name_n_list.append(name_5)
+                des_n_list.append((lev1_des_set[set_pos],'symb_rep'))
 
             #print(name_n_list)
+            name_n_pos = 0
             for name_n in name_n_list:
                 #print(name_n)
+                des_n = des_n_list[name_n_pos]
+                #print(str(des_n))
+                
                 name_json = HumanName(name_n)
                 name_dict_org = name_json.as_dict()
                 keys = name_dict_org.keys()
@@ -82,6 +126,8 @@ for name_org in f_list:
                         name_dict[key] = name_dict_org[key]
 
                 name_keys = list(name_dict.keys())
+                #if name_n_pos == 0 and set_pos==0:
+                #    org_keys=name_keys
                 len_name_keys=len(name_keys)
                 #print(name_dict)
 
@@ -111,9 +157,16 @@ for name_org in f_list:
                     #print('***')
                     if out_words not in out_words_list:
                         out_words_list.append(out_words)
-                        f_out.write(name_org+'\t'+out_words+'\t'+jf.metaphone(name_org)+'\t'+jf.metaphone(out_words)+'\t'+str(seq_print)+'\n')
+                        is_metaphone_mismatch = 0
+                        metaphone_out_words = jf.metaphone(out_words)
+                        metaphone_out_words_set = metaphone_out_words.split(' ')
+                        for metaphone_out in metaphone_out_words_set:
+                            if metaphone_out not in metaphone_name_org:
+                                is_metaphone_mismatch+=1
+                        f_out.write(name_org+'\t'+out_words+'\t'+metaphone_name_org+'\t'+metaphone_out_words+'\t'+str(name_keys)+'\t'+str(name_org_keys)+'\t'+str(des_n)+'\t'+str(is_metaphone_mismatch)+'\t'+str(name_keys==name_org_keys)+'\n')
 
-
+                name_n_pos+=1
+        set_pos+=1
 f_out.close()
         
 
