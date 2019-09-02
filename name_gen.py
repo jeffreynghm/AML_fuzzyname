@@ -3,11 +3,14 @@ import pandas as pd
 from itertools import combinations
 from itertools import permutations
 import jellyfish as jf
+import random as rm
 
 f = open('names.txt','r+')
 f_out = open('names_out.txt','w+')
+f_dict_out = open('names_dict_out.txt','w+')
 
 f_list = f.readlines()
+sampleNumber = 8
 
 #levenstein distance of 1
 def edits1(word):
@@ -48,6 +51,7 @@ def nth_repl(s, sub, repl, nth):
 
 lev1_des_set = ()
 symb_des_set =()
+names_dict_sampled={}
 for name_org in f_list:
     name_org = name_org.strip()
     print(name_org)
@@ -63,12 +67,14 @@ for name_org in f_list:
     #keep the original keys
     org_keys = []
 
-
     #the original sequence
     name_org_json = HumanName(name_org)
     name_org_dict_org = name_org_json.as_dict()
     keys_org = name_org_dict_org.keys()
     name_org_dict={}
+
+    #keep all the variations of the same name_org
+    name_dict_population={}
     
     #cleansed the dict
     for key in keys_org:
@@ -163,12 +169,34 @@ for name_org in f_list:
                         for metaphone_out in metaphone_out_words_set:
                             if metaphone_out not in metaphone_name_org:
                                 is_metaphone_mismatch+=1
-                        f_out.write(name_org+'\t'+out_words+'\t'+metaphone_name_org+'\t'+metaphone_out_words+'\t'+str(name_keys)+'\t'+str(name_org_keys)+'\t'+str(des_n)+'\t'+str(is_metaphone_mismatch)+'\t'+str(name_keys==name_org_keys)+'\n')
-
+                        output_txt = name_org+'\t'+out_words+'\t'+metaphone_name_org+'\t'+metaphone_out_words+'\t'+str(name_keys)+'\t'+str(name_org_keys)+'\t'+str(des_n)+'\t'+str(is_metaphone_mismatch)+'\t'+str(name_keys==name_org_keys)
+                        dict_output_txt = {'name_org': name_org,'out_words': out_words,'metaphone_name_org': metaphone_name_org,'metaphone_out_words': metaphone_out_words,'name_keys': str(name_keys),'name_org_keys': str(name_org_keys),'des_n': str(des_n),'is_metaphone_mistmatch':str(is_metaphone_mismatch), 'seq_unchanged':str(name_keys==name_org_keys)}
+                        name_dict_population[out_words] = dict_output_txt
+                        f_out.write(output_txt+'\n')
                 name_n_pos+=1
         set_pos+=1
+    names_dict_sampled[name_org] = rm.sample(name_dict_population.items(), k=sampleNumber)
+    f_dict_out.write(str(names_dict_sampled[name_org])+'\n')
 f_out.close()
-        
+f_dict_out.close()
 
-    #soundex
-    #https://languages.oup.com/licensing-and-developers
+#df = pd.DataFrame.from_dict(names_dict_sampled, orient='index')
+
+#output the result to dataframe
+org_key = names_dict_sampled.keys()
+entryCnt=0
+
+for key in org_key:
+    org_name_out = pd.Series(key)
+    alterList = names_dict_sampled[key]
+    for entry in alterList:
+        amend_name_out = pd.Series(entry[0])
+        temp_pd = pd.DataFrame.from_dict(entry[1],orient='index').T
+        #temp_pd = pd.concat([amend_des_out.T],axis=1)
+        if entryCnt == 0:
+            outpd = temp_pd
+        else:
+            outpd = pd.concat([outpd,temp_pd],axis=0)
+        entryCnt+=1
+
+outpd.to_csv(r'output.txt',sep='\t')

@@ -1,0 +1,25 @@
+	name_org	out_words	metaphone_name_org	metaphone_out_words	name_keys	name_org_keys	des_n	is_metaphone_mistmatch	seq_unchanged
+0	Ng Hon Ming	NgHon Mine	NK HN MNK	NHN MN	['first', 'last']	['first', 'middle', 'last']	('lev1_replaces', 'symb_rep')	1	False
+0	Ng Hon Ming	Ng Mcing Hon	NK HN MNK	NK MSNK HN	['first', 'middle', 'last']	['first', 'middle', 'last']	lev1_inserts	1	True
+0	Ng Hon Ming	Ng pHon-Ming	NK HN MNK	NK FNMNK	['first', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	False
+0	Ng Hon Ming	bMing Hon Ng	NK HN MNK	BMNK HN NK	['first', 'middle', 'last']	['first', 'middle', 'last']	lev1_replaces	1	True
+0	Ng Hon Ming	zon-Ming Ng	NK HN MNK	SNMNK NK	['first', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	False
+0	Ng Hon Ming	Ming Ngton	NK HN MNK	MNK NKTN	['first', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	False
+0	Ng Hon Ming	HonMing jg	NK HN MNK	HNMNK JK	['first', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	2	False
+0	Ng Hon Ming	Nkg-Hon Ming	NK HN MNK	NKKHN MNK	['first', 'last']	['first', 'middle', 'last']	('lev1_replaces', 'symb_rep')	1	False
+0	Jeffrey Ng	Jeffrey-yg	JFR NK	JFRK	['first']	['first', 'last']	('lev1_replaces', 'symb_rep')	1	False
+0	Jeffrey Ng	JeffretNg	JFR NK	JFRTNK	['first']	['first', 'last']	('lev1_replaces', 'symb_rep')	1	False
+0	Jeffrey Ng	Jeffrey-ig	JFR NK	JFRK	['first']	['first', 'last']	('lev1_trans', 'symb_rep')	1	False
+0	Jeffrey Ng	Jeffrey wg	JFR NK	JFR K	['first', 'last']	['first', 'last']	lev1_replaces	0	True
+0	Jeffrey Ng	JeffrreyNg	JFR NK	JFRNK	['first']	['first', 'last']	('lev1_replaces', 'symb_rep')	1	False
+0	Jeffrey Ng	Jeffgey Ng	JFR NK	JFJ NK	['first', 'last']	['first', 'last']	lev1_replaces	1	True
+0	Jeffrey Ng	Jefrfey Ng	JFR NK	JFRF NK	['first', 'last']	['first', 'last']	lev1_inserts	1	True
+0	Jeffrey Ng	ig Jeffrey	JFR NK	IK JFR	['first', 'last']	['first', 'last']	lev1_trans	1	True
+0	Jeffrey Ng Hon Ming	NgHon Jeffrey Minsg	JFR NK HN MNK	NHN JFR MNSK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_replaces', 'symb_rep')	2	True
+0	Jeffrey Ng Hon Ming	pgHon Ming Jeffrey	JFR NK HN MNK	PHN MNK JFR	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_replaces', 'symb_rep')	1	True
+0	Jeffrey Ng Hon Ming	Ng Jeffrey Hln-Ming	JFR NK HN MNK	NK JFR LNMNK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	True
+0	Jeffrey Ng Hon Ming	Ng Jeffrey HonMing	JFR NK HN MNK	NK JFR HNMNK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	True
+0	Jeffrey Ng Hon Ming	JeffreyNg Hon oMing	JFR NK HN MNK	JFRNK HN OMNK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	2	True
+0	Jeffrey Ng Hon Ming	Ming vHon JeffreyNg	JFR NK HN MNK	MNK FHN JFRNK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_replaces', 'symb_rep')	2	True
+0	Jeffrey Ng Hon Ming	HonMinng Ng Jeffrey	JFR NK HN MNK	HNMNK NK JFR	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	True
+0	Jeffrey Ng Hon Ming	Jeffrey Ng Hon-eing	JFR NK HN MNK	JFR NK HNNK	['first', 'middle', 'last']	['first', 'middle', 'last']	('lev1_inserts', 'symb_rep')	1	True
